@@ -1,0 +1,2 @@
+# Only needed when packaging the single-file exe with scripts/build.py
+pyinstaller>=6.0

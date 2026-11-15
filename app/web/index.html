@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>读一下 · 划词朗读与自然拼读</title>
+<link rel="icon" type="image/png" sizes="256x256" href="/icon.png">
+<link rel="apple-touch-icon" href="/icon.png">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="rail">
+    <img class="brand" src="/icon.png" alt="读一下">
+    <nav class="rail-nav">
+      <button class="rail-btn active" data-view="query" title="朗读与翻译">
+        <svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>
+        <span>朗读</span>
+      </button>
+      <button class="rail-btn" data-view="phonics" title="自然拼读">
+        <svg viewBox="0 0 24 24"><path d="M4 6h6M4 12h10M4 18h7"/><circle cx="18" cy="6" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+        <span>拼读</span>
+      </button>
+      <button class="rail-btn" data-view="history" title="历史记录">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+        <span>历史</span>
+      </button>
+      <button class="rail-btn" data-view="favorites" title="生词本">
+        <svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2-5.5-2.9L6.5 20l1-6.2L3 9.6l6.2-.9L12 3z"/></svg>
+        <span>生词本</span>
+      </button>
+      <div class="rail-spacer"></div>
+      <button class="rail-btn" data-view="settings" title="设置">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06-2 2-.06-.06A1.7 1.7 0 0 0 15.9 18a1.7 1.7 0 0 0-1 1.55V20h-2.8v-.45a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06-2-2 .06-.06A1.7 1.7 0 0 0 7.5 15a1.7 1.7 0 0 0-1.55-1H5.5v-2.8h.45A1.7 1.7 0 0 0 7.5 10a1.7 1.7 0 0 0-.34-1.87l-.06-.06 2-2 .06.06A1.7 1.7 0 0 0 11 6.5 1.7 1.7 0 0 0 12 5V4.5h2.8V5a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06 2 2-.06.06A1.7 1.7 0 0 0 19.4 10a1.7 1.7 0 0 0 1.55 1h.45v2.8h-.45a1.7 1.7 0 0 0-1.55 1z"/></svg>
+        <span>设置</span>
+      </button>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="search">
+        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 4.5 4.5"/></svg>
+        <input id="q" type="text" autocomplete="off" spellcheck="false"
+               placeholder="输入英文，或在任意软件里选中文字后按热键">
+        <button class="btn-ghost" id="btnQuery">查询</button>
+        <button class="btn-primary" id="btnSpeak">
+          <svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M16 8.5a5 5 0 0 1 0 7"/></svg>
+          朗读
+        </button>
+      </div>
+      <span class="hotkey-chip" id="hotkeyChip">Ctrl+Shift+S</span>
+      <button class="icon-btn" id="themeBtn" title="切换深浅主题">
+        <svg viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+      </button>
+    </header>
+
+    <div class="content" id="content">
+
+      <section class="view" id="view-query">
+        <div class="card word-card">
+          <div class="word-row">
+            <div>
+              <div class="eyebrow" id="entryType">选中文本 / 单词</div>
+              <h1 id="wordTitle">读一下</h1>
+              <div class="ipa-row">
+                <span class="ipa" id="usphone"></span>
+                <span class="ipa-sub" id="ukphone"></span>
+              </div>
+            </div>
+            <div class="word-actions">
+              <button class="icon-btn big" id="btnReplay" title="重播">
+                <svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M16 8.5a5 5 0 0 1 0 7"/></svg>
+              </button>
+              <button class="icon-btn big" id="favBtn" title="加入生词本">
+                <svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2-5.5-2.9L6.5 20l1-6.2L3 9.6l6.2-.9L12 3z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="sense-list" id="senses"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">原文</span><span class="tag" id="lenTag"></span></div>
+          <div class="origin-text" id="origin">在任意软件中选中英文文字，按 <b id="hotkeyInline">Ctrl+Shift+S</b> 即可朗读、翻译并查看自然拼读拆解。</div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">联网翻译</span>
+            <span class="tag" id="trEngine">未翻译</span>
+            <button class="link-btn" id="trRetry">重新翻译</button></div>
+          <div class="translation" id="translation">等待输入…</div>
+          <div class="tr-notice" id="trNotice"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">自然拼读拆解</span><span class="tag" id="phIpa"></span></div>
+          <div class="syllables" id="syllables"></div>
+          <div class="chunks" id="chunks"></div>
+          <div class="ph-note" id="phNote"></div>
+          <div class="rules" id="phRules"></div>
+        </div>
+      </section>
+
+      <section class="view hidden" id="view-phonics">
+        <div class="card">
+          <div class="card-head"><span class="card-title">拼读规则总览</span><span class="tag" id="phWordBig"></span></div>
+          <div class="ph-hero" id="phHero">选中一个单词后，这里会展示逐块拼读。</div>
+          <div class="chunks large" id="chunksBig"></div>
+          <div class="rules" id="phRulesBig"></div>
+          <p class="hint">点击任意拼读块，会朗读该字母组合的例词。</p>
+        </div>
+      </section>
+
+      <section class="view hidden" id="view-history">
+        <div class="card">
+          <div class="card-head"><span class="card-title">查询历史</span>
+            <button class="link-btn" id="clearHistory">清空</button></div>
+          <div class="list" id="historyList"></div>
+        </div>
+      </section>
+
+      <section class="view hidden" id="view-favorites">
+        <div class="card">
+          <div class="card-head"><span class="card-title">生词本</span><span class="tag" id="favCount">0 条</span></div>
+          <div class="list" id="favList"></div>
+        </div>
+      </section>
+
+      <section class="view hidden" id="view-settings">
+        <div class="card">
+          <div class="card-head"><span class="card-title">发音</span></div>
+          <div class="field"><label>美式音色（句子）</label>
+            <select id="setVoice"></select>
+            <div class="desc" id="voiceDesc"></div></div>
+          <div class="field"><label>发音速度</label>
+            <select id="setWordVoice">
+              <option value="dict">快速优先（推荐：单词约 0.2 秒、句子约 1 秒出声）</option>
+              <option value="edge">统一美式神经音（2~3 秒，音质更连贯）</option>
+            </select>
+            <div class="desc">快速模式：单词走词典真人发音，句子走网页发音接口，都失败才回退美式神经音。想要最好的音质就选第二项。</div></div>
+          <div class="field hotkey-field" id="hotkeyField"><label>触发热键（点击录制）</label>
+            <div class="hk-row">
+              <button type="button" class="hk-capture" id="hkCapture">Ctrl + Shift + S</button>
+              <button type="button" class="link-btn" id="hkReset">恢复默认</button>
+            </div>
+            <div class="desc" id="hkHint">点击左侧按钮后直接按下想要的组合键（例如 Ctrl + Alt + D），按 Esc 取消。支持 Ctrl / Alt / Shift + 字母、数字、F1–F12，也可单独用功能键；设置后立即生效，无需点保存。</div>
+            <div class="hk-presets" id="hkPresets">
+              <span>常用</span>
+              <button type="button" data-mods="6" data-vk="83" data-label="Ctrl + Shift + S">Ctrl+Shift+S</button>
+              <button type="button" data-mods="6" data-vk="82" data-label="Ctrl + Shift + R">Ctrl+Shift+R</button>
+              <button type="button" data-mods="3" data-vk="83" data-label="Ctrl + Alt + S">Ctrl+Alt+S</button>
+              <button type="button" data-mods="0" data-vk="120" data-label="F9">F9</button>
+              <button type="button" data-mods="0" data-vk="121" data-label="F10">F10</button>
+            </div>
+            <div class="hk-msg" id="hkMsg"></div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">翻译</span></div>
+          <div class="field"><label>翻译引擎</label>
+            <select id="setEngine">
+              <option value="baidu">百度翻译（推荐，需填 APPID / 密钥）</option>
+              <option value="free">仅 MyMemory 免 Key</option>
+              <option value="custom">自定义接口优先</option>
+            </select>
+            <div class="desc">百度网页接口已加风控，稳定可用的是开放平台通用翻译 API。标准版免费，注册后把 APPID 与密钥填在下面即可；未填时自动回退免 Key 引擎。</div></div>
+          <div class="field"><label>百度翻译 APPID</label>
+            <input id="setBaiduAppid" placeholder="开放平台控制台里查看"></div>
+          <div class="field"><label>百度翻译 密钥</label>
+            <input id="setBaiduSecret" type="password" placeholder="开发者信息中的密钥"></div>
+          <div class="field"><label>注册地址</label>
+            <div class="desc"><a href="https://fanyi-api.baidu.com/manage/developer" target="_blank">fanyi-api.baidu.com/manage/developer</a>（标准版免费额度）</div></div>
+          <div class="field"><label>自定义接口 URL</label>
+            <input id="setApiUrl" placeholder="https://…/translate 或 …/chat/completions"></div>
+          <div class="field"><label>自定义接口 Key（可选）</label>
+            <input id="setApiKey" type="password" placeholder="留空表示无需鉴权"></div>
+          <div class="field"><label>目标语言</label>
+            <select id="setLang"><option value="zh-CN">简体中文</option><option value="zh-TW">繁体中文</option><option value="en">英语</option><option value="ja">日语</option></select></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">行为与外观</span></div>
+          <div class="field row"><label for="setAutoSpeak">抓词后自动朗读</label><input type="checkbox" id="setAutoSpeak"></div>
+          <div class="field row"><label for="setAutoTranslate">抓词后自动翻译</label><input type="checkbox" id="setAutoTranslate"></div>
+          <div class="field row"><label for="setAutoPhonics">单词自动解析拼读</label><input type="checkbox" id="setAutoPhonics"></div>
+          <div class="field row"><label for="setAutostart">开机自启（托盘常驻）</label><input type="checkbox" id="setAutostart"></div>
+          <div class="field row"><label for="setStartMin">启动时只驻留托盘（不弹主窗口）</label><input type="checkbox" id="setStartMin"></div>
+          <div class="field row"><label for="setTrayOpen">关窗后按热键自动打开主窗口</label><input type="checkbox" id="setTrayOpen"></div>
+          <div class="field row"><label for="setBalloon">关窗后用通知显示译文</label><input type="checkbox" id="setBalloon"></div>
+          <div class="desc">主窗口关到托盘后按热键，仍会立即朗读并用系统通知显示译文；默认不弹窗，不打断当前操作。</div>
+          <div class="field row"><label for="setTheme">深色主题</label><input type="checkbox" id="setTheme"></div>
+          <div class="field"><label>程序位置</label><div class="desc path" id="installPath"></div></div>
+          <button class="btn-primary" id="btnSave">保存设置</button>
+          <button class="link-btn danger" id="btnQuit">退出程序</button>
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="statusbar">
+      <span class="dot" id="statusDot"></span>
+      <span id="status">就绪</span>
+      <span class="grow"></span>
+      <span id="voiceTag">美式神经音</span>
+      <span class="sep"></span>
+      <span id="engineTag">等待抓取</span>
+    </footer>
+  </main>
+</div>
+<audio id="player"></audio>
+<script src="/app.js"></script>
+</body>
+</html>
