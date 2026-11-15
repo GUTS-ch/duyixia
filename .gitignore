@@ -1,0 +1,36 @@
+# Runtime data (personal config, history, caches, log)
+.duyixia/
+config.json
+history.json
+favorites.json
+python_path.txt
+启动.vbs
+
+# Generated icon assets (restored from assets/*.base64)
+app/icon.ico
+app/web/icon.png
+
+# Build artifacts / binaries: never commit these
+_dist/
+_buildtmp/
+_buildtools/
+build/
+dist/
+*.spec
+*.exe
+*.zip
+*.msi
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Editors / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

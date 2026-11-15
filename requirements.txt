@@ -1,0 +1,3 @@
+# Runtime dependencies (Python 3.10+, Windows).
+# edge-tts brings in aiohttp / certifi / edge_playback and friends.
+edge-tts>=7.0,<8
